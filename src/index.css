@@ -1,5 +1,10 @@
 /* Load Logic CSS - React Project Styles & Premium Animations */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tw-animate-css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -23,6 +28,24 @@
   --gradient-primary: linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%);
   --gradient-text: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
   --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
 }
 
 html {
@@ -133,6 +156,33 @@ nav.scrolled {
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   padding: 1rem 8%;
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: var(--white);
+  transition: all 0.3s ease;
+}
+
+.bar.open:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.bar.open:nth-child(2) {
+  opacity: 0;
+}
+.bar.open:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
 }
 
 .logo {
@@ -692,6 +742,12 @@ section {
   text-align: center;
 }
 
+.result-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .result-val {
   font-family: 'Outfit', sans-serif;
   font-size: 1.8rem;
@@ -1001,12 +1057,28 @@ footer p {
 }
 
 @media (max-width: 768px) {
-  nav {
-    padding: 1.25rem 5%;
+  .menu-toggle {
+    display: flex;
   }
+  
   nav ul {
-    display: none;
+    position: fixed;
+    top: 70px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 70px);
+    background: rgba(5, 7, 17, 0.95);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    transition: all 0.4s ease;
   }
+
+  nav ul.active {
+    left: 0;
+  }
+  
   footer {
     flex-direction: column;
     text-align: center;

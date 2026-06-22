@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import AnoAI from './components/ui/animated-shader-background';
+import { CircularTestimonialsDemo } from './components/circular-testimonials-demo';
+import { QualificationForm } from './components/QualificationForm';
+import logo from './assets/logo.png';
 
 export default function App() {
   // Navigation Background on Scroll
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -11,8 +17,38 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Booking Tab State
-  const [activeTab, setActiveTab] = useState('tally');
+  // Initialize Google Calendar Scheduling Button
+  useEffect(() => {
+    // Inject the CSS
+    const link = document.createElement('link');
+    link.href = "https://calendar.google.com/calendar/scheduling-button-script.css";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    // Inject the Script
+    const script = document.createElement('script');
+    script.src = "https://calendar.google.com/calendar/scheduling-button-script.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Initialize the button when script loads
+    script.onload = () => {
+      if (window.calendar && window.calendar.schedulingButton) {
+        window.calendar.schedulingButton.load({
+          url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2Dw4I1qUv4wlZnY1tPR8V9a7sSVztUqMaii2aQEUONUmQj6P4srF8HwXrV-tNe5pDRsRsgPDie?gv=true',
+          color: '#039BE5',
+          label: 'Book an appointment',
+          target: document.getElementById('calendar-button-container'),
+        });
+      }
+    };
+
+    return () => {
+      // Cleanup
+      if (document.body.contains(script)) document.body.removeChild(script);
+      if (document.head.contains(link)) document.head.removeChild(link);
+    };
+  }, []);
 
   // ROI Calculator State
   const [adv, setAdv] = useState(10000);
@@ -41,22 +77,30 @@ export default function App() {
   };
 
   return (
-    <div className="app-container">
+    <div>
+      <AnoAI />
       {/* Background Blurs */}
       <div className="bg-glow-1"></div>
       <div className="bg-glow-2"></div>
 
       {/* HEADER / NAVIGATION */}
-      <nav id="site-nav" className={scrolled ? 'scrolled' : ''}>
-        <a href="#" className="logo" id="nav-logo">Load<span>Logic</span></a>
-        <ul id="nav-links">
-          <li><a href="#problems" id="link-problems">The Issues</a></li>
-          <li><a href="#services" id="link-services">Our Solutions</a></li>
-          <li><a href="#roi" id="link-roi">ROI Calculator</a></li>
-          <li><a href="#case-studies" id="link-cases">Case Studies</a></li>
-          <li><a href="#about" id="link-about">About</a></li>
-          <li><a href="#pricing" id="link-pricing">Pricing</a></li>
-          <li><a href="#book" className="nav-cta" id="link-book-cta">Book Consultation</a></li>
+      <nav id="site-nav" className={`${scrolled ? 'scrolled' : ''} ${menuOpen ? 'menu-open' : ''}`}>
+        <a href="#" className="logo" id="nav-logo">
+          <img src={logo} alt="Load Logic Logo" className="w-8 h-8 object-contain" />
+          Load<span>Logic</span>
+        </a>
+        <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+          <span className={menuOpen ? 'bar open' : 'bar'}></span>
+          <span className={menuOpen ? 'bar open' : 'bar'}></span>
+          <span className={menuOpen ? 'bar open' : 'bar'}></span>
+        </button>
+        <ul id="nav-links" className={menuOpen ? 'active' : ''}>
+          <li><a href="#problems" id="link-problems" onClick={() => setMenuOpen(false)}>The Issues</a></li>
+          <li><a href="#services" id="link-services" onClick={() => setMenuOpen(false)}>Our Solutions</a></li>
+          <li><a href="#roi" id="link-roi" onClick={() => setMenuOpen(false)}>ROI Calculator</a></li>
+          <li><a href="#case-studies" id="link-cases" onClick={() => setMenuOpen(false)}>Case Studies</a></li>
+          <li><a href="#about" id="link-about" onClick={() => setMenuOpen(false)}>About</a></li>
+          <li><a href="#book" className="nav-cta" id="link-book-cta" onClick={() => setMenuOpen(false)}>Book Consultation</a></li>
         </ul>
       </nav>
 
@@ -81,15 +125,15 @@ export default function App() {
           <div class="stat-num" id="stat-num-1">10<span>x</span></div>
           <div class="stat-label" id="stat-label-1">Average Project ROI</div>
         </div>
-        <div class="stat-item fade-in-section" id="stat-2">
+        <div className="stat-item fade-in-section" id="stat-2">
           <div class="stat-num" id="stat-num-2">95<span>%</span></div>
           <div class="stat-label" id="stat-label-2">Leads Routed Under 1 Hour</div>
         </div>
-        <div class="stat-item fade-in-section" id="stat-3">
+        <div className="stat-item fade-in-section" id="stat-3">
           <div class="stat-num" id="stat-num-3">3<span>h</span></div>
           <div class="stat-label" id="stat-label-3">Admin Work Cut to 10 Mins</div>
         </div>
-        <div class="stat-item fade-in-section" id="stat-4">
+        <div className="stat-item fade-in-section" id="stat-4">
           <div class="stat-num" id="stat-num-4">21<span>d</span></div>
           <div class="stat-label" id="stat-label-4">Average Go-Live Time</div>
         </div>
@@ -348,9 +392,9 @@ export default function App() {
           <div className="about-graphics" id="about-gfx-container">
             <div className="about-card-glow" id="gfx-glow"></div>
             <div className="about-avatar-card" id="avatar-panel">
-              <div className="avatar-icon" id="avatar-icon-element">👨‍💻</div>
-              <h3 id="founder-name">Robel S.</h3>
-              <p id="founder-title">Founder & Lead Architect</p>
+              <div className="avatar-icon" id="avatar-icon-element">🚀</div>
+              <h3 id="founder-name">Load Logic</h3>
+              <p id="founder-title">Engineering & Data Science</p>
               <div className="skills-list" id="skills-tags-container">
                 <span className="skill-tag" id="skill-1">Large Language Models</span>
                 <span className="skill-tag" id="skill-2">RAG Pipelines</span>
@@ -363,124 +407,40 @@ export default function App() {
 
           <div className="about-bio" id="bio-container">
             <span className="section-label" id="label-about">The Expertise</span>
-            <h2 className="section-title" id="title-about">Built by an <em>AI Engineer & Data Scientist</em></h2>
+            <h2 className="section-title" id="title-about">Built by <em>Data Scientists & AI Engineers</em></h2>
             <p className="founder-tagline" id="about-tagline">Theoretical depth paired with hands-on automation expertise.</p>
-            <p id="bio-p-1">At Load Logic, we don't just patch software together. Our architectures are designed by Robel S., an AI Engineer and Data Scientist specializing in AGI research, LLM fine-tuning, and Retrieval-Augmented Generation (RAG) systems.</p>
+            <p id="bio-p-1">At Load Logic, we don't just patch software together. Our architectures are built by a team of AI Engineers and Data Scientists specializing in AGI research, LLM fine-tuning, and Retrieval-Augmented Generation (RAG) systems.</p>
             <p id="bio-p-2">With a dual background in Computer Science and Data Science, we bring engineering precision to business operations—turning complex spreadsheets, manuals, and data silos into clean, automated infrastructure.</p>
           </div>
         </div>
       </section>
 
-      {/* PRICING SECTION */}
-      <section id="pricing">
-        <div className="section-header" id="pricing-header">
-          <span className="section-label" id="label-pricing">Productized Offers</span>
-          <h2 className="section-title" id="title-pricing">Clear, Fixed-Scope <em>Engagements</em></h2>
-          <p className="section-sub" id="sub-pricing">No hidden costs. No open-ended hourly billing. Fast deployment models designed to pay for themselves within months.</p>
-        </div>
-
-        <div className="pricing-grid" id="pricing-tiers-container">
-          <div className="price-card" id="price-tier-1">
-            <h3 id="tier-1-title">Bronze</h3>
-            <p id="tier-1-subtitle">Perfect for establishing custom CRM pipelines and standard automations.</p>
-            <div className="price-amt" id="tier-1-price">$5,000<span>/ 21 Days</span></div>
-            <ul className="price-features" id="tier-1-features-list">
-              <li>CRM Baseline Setup (objects, pipelines)</li>
-              <li>3 Core Custom Automations</li>
-              <li>1 API Integration (Calendly/Stripe)</li>
-              <li>Basic Reporting Dashboard</li>
-              <li>Training + 14 Days Support</li>
-              <li>Go-Live + ROI Forecast Deliverable</li>
-            </ul>
-            <a href="#book" className="btn-secondary" id="btn-tier-1">Get Bronze Plan</a>
-          </div>
-
-          <div className="price-card popular" id="price-tier-2">
-            <div className="price-badge" id="tier-2-badge">Most Popular</div>
-            <h3 id="tier-2-title">Silver</h3>
-            <p id="tier-2-subtitle">Complete operational revamp with scoring and data migration.</p>
-            <div className="price-amt" id="tier-2-price">$12,500<span>/ 28-42 Days</span></div>
-            <ul class="price-features" id="tier-2-features-list">
-              <li>Everything in Bronze included</li>
-              <li>Data Migration (up to 10k records)</li>
-              <li>6 Automations, Lead Scoring & Proposals</li>
-              <li>2 Core Integrations + Advanced Reporting</li>
-              <li>30 Days Optimization + SOP Playbooks</li>
-            </ul>
-            <a href="#book" className="btn-primary" id="btn-tier-2">Get Silver Plan</a>
-          </div>
-
-          <div className="price-card" id="price-tier-3">
-            <h3 id="tier-3-title">Custom / Enterprise</h3>
-            <p id="tier-3-subtitle">Tailored ML architectures and custom middleware integrations.</p>
-            <div className="price-amt" id="tier-3-price">$25,000<span>+</span></div>
-            <ul className="price-features" id="tier-3-features-list">
-              <li>Multi-System Middleware Integrations</li>
-              <li>Custom LLM/RAG Pipeline Deployments</li>
-              <li>Multi-Region Support & Compliance Setup</li>
-              <li>90-Day Conversion Optimization Sprint</li>
-              <li>Dedicated Success Manager Retainer</li>
-            </ul>
-            <a href="#book" className="btn-secondary" id="btn-tier-3">Consult with Robel</a>
-          </div>
-        </div>
-      </section>
-
-      {/* BOOKING SECTION (Tally & Google Calendar Embeds) */}
+      {/* BOOKING / QUALIFICATION SECTION */}
       <section className="booking-section" id="book">
         <div className="section-header" id="booking-header">
           <span className="section-label" id="label-booking">Consultation</span>
           <h2 className="section-title" id="title-booking">Secure Your <em>Operational Audit</em></h2>
-          <p className="section-sub" style={{ margin: '0 auto 2.5rem' }} id="sub-booking">Choose below to either fill out our qualification intake form or schedule directly on our calendar.</p>
+          <p className="section-sub" style={{ margin: '0 auto 2.5rem' }} id="sub-booking">Complete the form below to help us prepare for your audit.</p>
         </div>
 
         <div className="booking-wrapper" id="booking-widgets-wrapper">
-          <div className="booking-tabs" id="booking-tabs-nav">
-            <button 
-              className={`booking-tab-btn ${activeTab === 'tally' ? 'active' : ''}`} 
-              onClick={() => setActiveTab('tally')} 
-              id="btn-tab-tally"
-            >
-              1. Qualification Intake (Tally)
-            </button>
-            <button 
-              className={`booking-tab-btn ${activeTab === 'calendar' ? 'active' : ''}`} 
-              onClick={() => setActiveTab('calendar')} 
-              id="btn-tab-cal"
-            >
-              2. Live Scheduling (Google Cal)
-            </button>
-          </div>
-
-          {/* Tally Form Pane */}
-          {activeTab === 'tally' && (
-            <div className="booking-content-pane active" id="tally-pane">
-              <div className="embed-container" id="tally-embed-container">
-                <iframe 
-                  src="https://tally.so/embed/w7d2b5?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-                  title="Load Logic Client Qualification Form">
-                </iframe>
-              </div>
-            </div>
-          )}
-
-          {/* Google Calendar Pane */}
-          {activeTab === 'calendar' && (
-            <div className="booking-content-pane active" id="calendar-pane">
-              <div className="embed-container" id="calendar-embed-container">
-                <iframe 
-                  src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0Xf8x5D8xGk8VwVb7Z3L2F-x5S8p2n?gv=true" 
-                  title="Load Logic Scheduling Calendar">
-                </iframe>
-              </div>
-            </div>
-          )}
+          <QualificationForm />
         </div>
+      </section>
+
+      <section id="testimonials">
+        <div className="section-header">
+            <h2 className="section-title">Client <em>Testimonials</em></h2>
+        </div>
+        <CircularTestimonialsDemo />
       </section>
 
       {/* FOOTER */}
       <footer id="site-footer">
-        <div className="logo" id="footer-logo">Load<span>Logic</span></div>
+        <div className="logo" id="footer-logo">
+          <img src={logo} alt="Load Logic Logo" className="w-8 h-8 object-contain" />
+          Load<span>Logic</span>
+        </div>
         <p id="footer-copy">© 2026 Load Logic. All rights reserved. Custom AI & automation implementations.</p>
         <div className="footer-links" id="footer-links-container">
           <a href="#" id="foot-privacy">Privacy Policy</a>

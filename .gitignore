@@ -1,0 +1,8 @@
+# Dependencies
+node_modules
+dist
+.output
+
+# Environment Variables
+.env.local
+.env.*.local
