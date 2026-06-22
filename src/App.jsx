@@ -425,6 +425,11 @@ export default function App() {
 
         <div className="booking-wrapper" id="booking-widgets-wrapper">
           <QualificationForm />
+          <div className="mt-8 text-center text-muted">
+            <p className="font-semibold">Need to speak with us directly?</p>
+            <p>Email: <a href="mailto:contact@loadlogic.ai" className="text-accent underline">contact@loadlogic.ai</a></p>
+            <p>Phone: <a href="tel:+15551234567" className="text-accent underline">+1 (555) 123-4567</a></p>
+          </div>
         </div>
       </section>
 

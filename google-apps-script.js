@@ -7,11 +7,12 @@ function doPost(e) {
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
   
-  // Append data: Name, Email, Website, Budget, Challenges
+  // Append data: Name, Email, Phone, Website, Budget, Challenges
   sheet.appendRow([
     new Date(),
     data.name,
     data.email,
+    data.phone,
     data.website,
     data.budget,
     data.challenges

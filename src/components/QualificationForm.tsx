@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle, Loader2, AlertCircle } from 'lucide-react';
 
-// Access the Google Apps Script URL from environment variables
-const SCRIPT_URL = import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL;
+// Point to the local Vercel serverless function
+const API_ENDPOINT = '/api/submit-form';
 
 export function QualificationForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     website: '',
     budget: '<5k',
     challenges: ''
@@ -23,12 +24,13 @@ export function QualificationForm() {
     setStatus('submitting');
     
     try {
-      await fetch(SCRIPT_URL, {
+      const response = await fetch(API_ENDPOINT, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
+
+      if (!response.ok) throw new Error('Submission failed');
       setStatus('success');
     } catch (err) {
       console.error(err);
@@ -58,6 +60,10 @@ export function QualificationForm() {
         <div className="space-y-2">
           <label htmlFor="email" className="text-sm font-medium text-muted">Business Email</label>
           <input type="email" id="email" required value={formData.email} onChange={handleChange} className="w-full bg-background border border-border rounded-lg p-3 text-white focus:ring-2 focus:ring-accent outline-none" />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="phone" className="text-sm font-medium text-muted">Phone Number</label>
+          <input type="tel" id="phone" required value={formData.phone} onChange={handleChange} className="w-full bg-background border border-border rounded-lg p-3 text-white focus:ring-2 focus:ring-accent outline-none" />
         </div>
       </div>
 
