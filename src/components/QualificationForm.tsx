@@ -43,7 +43,14 @@ export function QualificationForm() {
       <div className="flex flex-col items-center justify-center p-8 bg-surface border border-border rounded-2xl text-center">
         <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
         <h3 className="text-2xl font-display font-bold mb-2">Application Received</h3>
-        <p className="text-muted">Thank you! We've received your details and will be in touch shortly.</p>
+        <p className="text-muted mb-6">Thank you! Please book a time for a follow-up call below:</p>
+        <iframe
+          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ2Dw4I1qUv4wlZnY1tPR8V9a7sSVztUqMaii2aQEUONUmQj6P4srF8HwXrV-tNe5pDRsRsgPDie?gv=true"
+          style={{ border: 0 }}
+          width="100%"
+          height="600"
+          frameBorder="0"
+        />
       </div>
     );
   }
