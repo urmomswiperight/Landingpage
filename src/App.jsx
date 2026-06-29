@@ -427,8 +427,8 @@ export default function App() {
           <QualificationForm />
           <div className="mt-8 text-center text-muted">
             <p className="font-semibold">Need to speak with us directly?</p>
-            <p>Email: <a href="mailto:contact@loadlogic.ai" className="text-accent underline">contact@loadlogic.ai</a></p>
-            <p>Phone: <a href="tel:+15551234567" className="text-accent underline">+1 (555) 123-4567</a></p>
+            <p>Email: <a href="mailto:info@loadlogic.dpdns.org" className="text-accent underline">info@loadlogic.dpdns.org</a></p>
+            <p>Phone: <a href="tel:+251-9-72-32-4832" className="text-accent underline">+251-9-72-32-4832</a></p>
           </div>
         </div>
       </section>
